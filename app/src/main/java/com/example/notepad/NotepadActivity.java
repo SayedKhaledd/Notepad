@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,21 +30,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.io.InputStream;
+
 
 public class NotepadActivity extends AppCompatActivity implements View.OnClickListener {
     Button add;
     TextView textView;
     int numberOfNotes = 0;
+  BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepad);
-        add = findViewById(R.id.button);
-        textView = findViewById(R.id.text);
-        add.setOnClickListener(this);
-        textView.setText(textView.getText().toString() + " " + numberOfNotes);
+         bottomNavigation = findViewById(R.id.navigation_bar);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(bottomNavigation, navController);
+//        add = findViewById(R.id.button);
+//        textView = findViewById(R.id.text);
+//        add.setOnClickListener(this);
+//        textView.setText(textView.getText().toString() + " " + numberOfNotes);
 //        if (savedInstanceState != null) {
 //            byteArray = savedInstanceState.getByteArray("bytes");
 //            Log.d("TAG", "onCreate: " + byteArray == null ? "null" : ("not null" + "and with length" + byteArray.length));
@@ -56,11 +66,11 @@ public class NotepadActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button) {
-            Intent intent = new Intent(this, NotepadTextActivity.class);
-            startActivityForResult(intent, 1);
-
-        }
+//        if (view.getId() == R.id.button) {
+//            Intent intent = new Intent(this, NotepadTextActivity.class);
+//            startActivityForResult(intent, 1);
+//
+//        }
     }
 
 

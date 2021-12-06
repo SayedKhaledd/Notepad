@@ -3,6 +3,7 @@ package com.example.notepad.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.example.notepad.R;
 import com.example.notepad.adapters.NotesAdapter;
 import com.example.notepad.listeners.NotesOnClickListener;
 import com.example.notepad.models.Note;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements NotesOnClickListener {
+public class HomeFragment extends Fragment implements NotesOnClickListener, View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +38,7 @@ public class HomeFragment extends Fragment implements NotesOnClickListener {
     private String mParam2;
     private ArrayList<Note> notes = new ArrayList<>();
     private RecyclerView recyclerView;
+    FloatingActionButton fab;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -73,8 +76,10 @@ public class HomeFragment extends Fragment implements NotesOnClickListener {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Note note=new Note("hello","12/5/2020");
+        Note note = new Note("hello", "12/5/2020");
         notes.add(note);
+        fab = view.findViewById(R.id.add);
+        fab.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setAdapter(new NotesAdapter(notes, this, getContext()));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -89,5 +94,12 @@ public class HomeFragment extends Fragment implements NotesOnClickListener {
         intent.putExtra("homeframent", note);
         intent.putExtra("noteindex", notes.indexOf(note) + 1);
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.add) {
+
+        }
     }
 }

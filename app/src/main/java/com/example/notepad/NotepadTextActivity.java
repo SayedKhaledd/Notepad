@@ -37,7 +37,7 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
     CheckBox checkBox;
     ImageView imageView;
     static byte[] byteArray;
-    BroadcastReceiver broadcastReceiver= new BroadcastReceiver() {
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("TAG", "onReceive: ");
@@ -71,6 +71,7 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
         urlArea = findViewById(R.id.url_area);
         checkBox = findViewById(R.id.checkbox);
         download = findViewById(R.id.downlaod);
+        imageView = findViewById(R.id.image);
         checkBox.setOnCheckedChangeListener(this);
         download.setOnClickListener(this);
         save.setOnClickListener(this);
@@ -105,7 +106,6 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (b) {
@@ -116,12 +116,14 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
             download.setVisibility(View.GONE);
         }
     }
-public void receive(){
-    IntentFilter intentFilter = new IntentFilter();
-    intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-    registerReceiver(broadcastReceiver, intentFilter);
-    Log.d("TAG", "onStart: ");
-}
+
+    public void receive() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.example.notepad");
+        registerReceiver(broadcastReceiver, intentFilter);
+        Log.d("TAG", "onStart: ");
+    }
+
     public void addToDatabase(Note note) {
         class AddNote extends AsyncTask<Void, Void, Void> {
 

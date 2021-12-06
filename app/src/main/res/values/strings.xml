@@ -22,4 +22,6 @@
     <string name="your_notes">Your Notes</string>
     <string name="search">Search</string>
     <string name="date">Date</string>
+    <string name="customize_your_note">Customize Your Note</string>
+    <string name="download_image">Download image?</string>
 </resources>

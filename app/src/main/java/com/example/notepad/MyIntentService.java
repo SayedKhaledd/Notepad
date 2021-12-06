@@ -89,11 +89,13 @@ public class MyIntentService extends IntentService {
                 byte[] byteArray = IOUtils.toByteArray(input);
                 Intent intent1 = new Intent();
                 intent1.setAction("com.example.notepad");
+                intent1.addCategory(Intent.CATEGORY_DEFAULT);
                 intent1.putExtra("bytes", byteArray);
-                sendBroadcast(intent1);
+               sendBroadcast(intent1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
 
         }
     }

@@ -107,6 +107,7 @@ public class HomeFragment extends Fragment implements NotesOnClickListener, View
         if (view.getId() == R.id.add) {
             Intent intent = new Intent(getActivity(), NotepadTextActivity.class);
             startActivity(intent);
+            getActivity().finish();
 
         }
     }

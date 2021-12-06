@@ -2,6 +2,7 @@ package com.example.notepad;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.PrecomputedTextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.room.Room;
 
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,10 +37,10 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
     CheckBox checkBox;
     ImageView imageView;
     static byte[] byteArray;
-    AppDatabase db;
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    BroadcastReceiver broadcastReceiver= new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d("TAG", "onReceive: ");
             byteArray = intent.getByteArrayExtra("bytes");
             Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             imageView.setImageBitmap(bmp);
@@ -48,9 +50,22 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
     };
 
     @Override
+    protected void onStart() {
+        receive();
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        receive();
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepad_text);
+
         save = findViewById(R.id.save);
         title = findViewById(R.id.title);
         urlArea = findViewById(R.id.url_area);
@@ -59,7 +74,6 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
         checkBox.setOnCheckedChangeListener(this);
         download.setOnClickListener(this);
         save.setOnClickListener(this);
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database-name").fallbackToDestructiveMigration().allowMainThreadQueries().build();
 
     }
 
@@ -80,22 +94,17 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
             Intent intent = new Intent(NotepadTextActivity.this, MyIntentService.class);
             intent.putExtra("url", urlArea.getText().toString());
             startService(intent);
+            receive();
         }
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         unregisterReceiver(broadcastReceiver);
+        super.onStop();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.example.notepad");
-        registerReceiver(broadcastReceiver, intentFilter);
-    }
+
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -107,7 +116,12 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
             download.setVisibility(View.GONE);
         }
     }
-
+public void receive(){
+    IntentFilter intentFilter = new IntentFilter();
+    intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+    registerReceiver(broadcastReceiver, intentFilter);
+    Log.d("TAG", "onStart: ");
+}
     public void addToDatabase(Note note) {
         class AddNote extends AsyncTask<Void, Void, Void> {
 

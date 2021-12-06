@@ -1,21 +1,30 @@
 package com.example.notepad.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.notepad.NoteInfoActivity;
 import com.example.notepad.R;
+import com.example.notepad.adapters.NotesAdapter;
+import com.example.notepad.listeners.NotesOnClickListener;
+import com.example.notepad.models.Note;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements NotesOnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,6 +34,8 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private ArrayList<Note> notes = new ArrayList<>();
+    private RecyclerView recyclerView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -60,8 +71,23 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        Note note=new Note("hello","12/5/2020");
+        notes.add(note);
+        recyclerView = view.findViewById(R.id.recycler);
+        recyclerView.setAdapter(new NotesAdapter(notes, this, getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+        return view;
+    }
+
+    @Override
+    public void noteOnClickListener(Note note) {
+        Intent intent = new Intent(getContext(), NoteInfoActivity.class);
+        intent.putExtra("homeframent", note);
+        intent.putExtra("noteindex", notes.indexOf(note) + 1);
+        startActivity(intent);
     }
 }

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Notepad</string>
+    <string name="login">Log in</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="wrong_login">Wrong username or password</string>
+    <string name="welcome_text">Remember everything important. A central place for your notes, ideas, lists and reminders.</string>
+    <string name="welcome">Welcome!</string>
+    <string name="skip">skip</string>
+    <string name="add">add</string>
+    <string name="next">Next</string>
+    <string name="add_notes">add notes</string>
+    <string name="number_of_notes">number of notes</string>
+    <string name="title">title</string>
+    <string name="save">save</string>
+    <string name="description">description</string>
+</resources>

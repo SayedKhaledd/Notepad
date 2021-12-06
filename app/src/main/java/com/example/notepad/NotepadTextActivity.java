@@ -1,14 +1,18 @@
 package com.example.notepad;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.PrecomputedTextCompat;
+import androidx.room.Room;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.CursorJoiner;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,13 +22,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.example.notepad.fragments.HomeFragment;
+import com.example.notepad.models.Note;
+
+import java.util.Date;
+
+import javax.xml.transform.Result;
+
 public class NotepadTextActivity extends AppCompatActivity implements View.OnClickListener, CheckBox.OnCheckedChangeListener {
     Button save, download;
     EditText title, description, urlArea;
-    boolean isAdded = false;
     CheckBox checkBox;
     ImageView imageView;
     static byte[] byteArray;
+    AppDatabase db;
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -48,6 +59,7 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
         checkBox.setOnCheckedChangeListener(this);
         download.setOnClickListener(this);
         save.setOnClickListener(this);
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database-name").fallbackToDestructiveMigration().allowMainThreadQueries().build();
 
     }
 
@@ -56,9 +68,12 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
         if (view.getId() == R.id.save) {
             if (!title.getText().toString().equals("")) {
                 Intent intent = new Intent(this, NotepadActivity.class);
-                isAdded = true;
-                intent.putExtra("isAdded", "true");
-                setResult(1, intent);
+                Note note = new Note();
+                note.setTitle(title.getText().toString());
+                note.setDate("22/5/2020");
+                note.setFav(false);
+                addToDatabase(note);
+                startActivity(intent);
                 finish();
             }
         } else if (view.getId() == R.id.downlaod) {
@@ -91,5 +106,26 @@ public class NotepadTextActivity extends AppCompatActivity implements View.OnCli
             urlArea.setVisibility(View.GONE);
             download.setVisibility(View.GONE);
         }
+    }
+
+    public void addToDatabase(Note note) {
+        class AddNote extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                AppDatabase.getInstance(getApplicationContext()).getDatabase()
+                        .noteDao()
+                        .insert(note);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+            }
+        }
+        AddNote addNote = new AddNote();
+        addNote.execute();
     }
 }

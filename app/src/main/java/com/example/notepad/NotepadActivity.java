@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.example.notepad.models.Note;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.InputStream;
@@ -39,13 +40,18 @@ public class NotepadActivity extends AppCompatActivity implements View.OnClickLi
     Button add;
     TextView textView;
     int numberOfNotes = 0;
-  BottomNavigationView bottomNavigation;
+    BottomNavigationView bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepad);
-         bottomNavigation = findViewById(R.id.navigation_bar);
+        Intent intent = getIntent();
+        Note note = (Note) intent.getSerializableExtra("note");
+        Log.d("TAG", "onCreateView: " + (note != null ? note.getTitle() : "null"));
+
+
+        bottomNavigation = findViewById(R.id.navigation_bar);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigation, navController);
 //        add = findViewById(R.id.button);

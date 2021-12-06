@@ -1,18 +1,23 @@
 package com.example.notepad.fragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.notepad.AppDatabase;
 import com.example.notepad.NoteInfoActivity;
+import com.example.notepad.NotepadTextActivity;
 import com.example.notepad.R;
 import com.example.notepad.adapters.NotesAdapter;
 import com.example.notepad.listeners.NotesOnClickListener;
@@ -39,6 +44,7 @@ public class HomeFragment extends Fragment implements NotesOnClickListener, View
     private ArrayList<Note> notes = new ArrayList<>();
     private RecyclerView recyclerView;
     FloatingActionButton fab;
+    private NotesAdapter notesAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -74,14 +80,14 @@ public class HomeFragment extends Fragment implements NotesOnClickListener, View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Note note = new Note("hello", "12/5/2020");
-        notes.add(note);
+
+        getAllFromDatabase();
         fab = view.findViewById(R.id.add);
         fab.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.recycler);
-        recyclerView.setAdapter(new NotesAdapter(notes, this, getContext()));
+        notesAdapter = new NotesAdapter(notes, this, getContext());
+        recyclerView.setAdapter(notesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
@@ -99,7 +105,34 @@ public class HomeFragment extends Fragment implements NotesOnClickListener, View
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.add) {
+            Intent intent = new Intent(getActivity(), NotepadTextActivity.class);
+            startActivity(intent);
 
         }
+    }
+
+
+    public void getAllFromDatabase() {
+        class GetNotes extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                notes = (ArrayList<Note>) AppDatabase.getInstance(getActivity().getApplicationContext()).getDatabase()
+                        .noteDao()
+                        .getAll();
+                notesAdapter.setNotes(notes);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+            }
+        }
+        GetNotes getNotes = new GetNotes();
+        getNotes.execute();
+
     }
 }

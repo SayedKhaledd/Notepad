@@ -22,6 +22,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     private NotesOnClickListener notesOnClickListener;
     private Context mContext;
 
+    public void setNotes(ArrayList<Note> notes) {
+        this.notes = notes;
+    }
+
     public NotesAdapter(ArrayList<Note> notes, NotesOnClickListener notesOnClickListener, Context mContext) {
         this.notes = notes;
         this.notesOnClickListener = notesOnClickListener;
@@ -56,7 +60,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             super(itemView);
             title = itemView.findViewById(R.id.title);
             date = itemView.findViewById(R.id.date);
-            parent=itemView.findViewById(R.id.parent);
+            parent = itemView.findViewById(R.id.parent);
             parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

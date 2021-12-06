@@ -1,24 +1,40 @@
 package com.example.notepad.models;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.io.Serializable;
 
+@Entity(tableName = "notes")
 public class Note implements Serializable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private int id;
 
-    private String title, description, imageURL, date;
+    @ColumnInfo(name = "title")
+    private String title;
+
+    @ColumnInfo(name = "description")
+    private String description;
+
+    @ColumnInfo(name = "image_url")
+    private String imageURL;
+
+    @ColumnInfo(name = "date")
+    private String date;
+
+    @ColumnInfo(name = "is_fav")
     private boolean isFav;
 
-    public Note(String title, String description, String imageURL, String date, boolean isFav) {
-        this.title = title;
-        this.description = description;
-        this.imageURL = imageURL;
-        this.date = date;
-        this.isFav = isFav;
+
+
+    public int getId() {
+        return id;
     }
 
-    public Note(String title, String date) {
-        this.title = title;
-        this.date = date;
-
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDate() {

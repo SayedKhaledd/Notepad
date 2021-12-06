@@ -19,4 +19,6 @@
     <string name="home">Home</string>
     <string name="favorites">Favorites</string>
     <string name="profile">Profile</string>
+    <string name="your_notes">Your Notes</string>
+    <string name="search">Search</string>
 </resources>

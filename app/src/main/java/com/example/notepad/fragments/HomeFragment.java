@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements NotesOnClickListener, View.OnClickListener {
+public class HomeFragment extends BaseFragment implements NotesOnClickListener, View.OnClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,10 +41,8 @@ public class HomeFragment extends Fragment implements NotesOnClickListener, View
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ArrayList<Note> notes = new ArrayList<>();
-    private RecyclerView recyclerView;
     FloatingActionButton fab;
-    private NotesAdapter notesAdapter;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -94,13 +92,6 @@ public class HomeFragment extends Fragment implements NotesOnClickListener, View
         return view;
     }
 
-    @Override
-    public void noteOnClickListener(Note note) {
-        Intent intent = new Intent(getContext(), NoteInfoActivity.class);
-        intent.putExtra("homeframent", note);
-        intent.putExtra("noteindex", notes.indexOf(note) + 1);
-        startActivity(intent);
-    }
 
     @Override
     public void onClick(View view) {
@@ -114,6 +105,7 @@ public class HomeFragment extends Fragment implements NotesOnClickListener, View
 
 
     public void getAllFromDatabase() {
+        super.getAllFromDatabase();
         class GetNotes extends AsyncTask<Void, Void, Void> {
 
             @Override

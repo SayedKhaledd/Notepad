@@ -24,4 +24,9 @@
     <string name="date">Date</string>
     <string name="customize_your_note">Customize Your Note</string>
     <string name="download_image">Download image?</string>
+    <string name="url_area">Url Area</string>
+    <string name="change_image_url">Change image URL</string>
+    <string name="add_to_favorites">Add to favorites?</string>
+    <string name="cancel">Cancel</string>
+    <string name="show_image">Show image</string>
 </resources>
